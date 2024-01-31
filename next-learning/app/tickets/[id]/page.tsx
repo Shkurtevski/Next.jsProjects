@@ -1,10 +1,13 @@
 import { NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 import React from "react";
+import { notFound } from "next/navigation";
 
 interface TicketParams extends ParsedUrlQuery {
   id: string;
 }
+
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const res = await fetch(`http://localhost:4000/tickets`);
@@ -22,6 +25,10 @@ async function getTicket(id: string) {
       revalidate: 60,
     },
   });
+
+  if (!res.ok) {
+    notFound();
+  }
   return res.json();
 }
 
@@ -39,7 +46,6 @@ const TicketDetails: NextPage<{ params: TicketParams }> = async ({
         <small>Created by {ticket.user_email}</small>
         <p>{ticket.body}</p>
         <div className={`pill ${ticket.priority}`}>
-          {" "}
           {ticket.priority} priority
         </div>
       </div>
