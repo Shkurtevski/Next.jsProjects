@@ -11,13 +11,19 @@ const CreateForm: NextPage = () => {
   const [priority, setPriority] = useState("low");
   const [isLoading, setIsLoading] = useState(false);
 
+  // Function to generate a random ID
+  const generateRandomId = () => {
+    return Math.random().toString(36).substring(2, 11);
+  };
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const ticket = {
+    const ticket: Ticket = {
+      id: generateRandomId(),
       title,
       body,
       priority,
@@ -31,6 +37,7 @@ const CreateForm: NextPage = () => {
     });
 
     if (res.status === 201) {
+      router.refresh();
       router.push("/tickets");
     }
   };

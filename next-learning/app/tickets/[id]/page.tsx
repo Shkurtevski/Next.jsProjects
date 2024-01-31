@@ -3,6 +3,10 @@ import { ParsedUrlQuery } from "querystring";
 import React from "react";
 import { notFound } from "next/navigation";
 
+export const metadata: { title: string } = {
+  title: "Ticket Detail Page",
+};
+
 interface TicketParams extends ParsedUrlQuery {
   id: string;
 }
