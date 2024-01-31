@@ -6,10 +6,20 @@ interface TicketParams extends ParsedUrlQuery {
   id: string;
 }
 
+export async function generateStaticParams() {
+  const res = await fetch(`http://localhost:4000/tickets`);
+
+  const tickets = await res.json();
+
+  return tickets.map((ticket: Ticket) => ({
+    id: ticket.id,
+  }));
+}
+
 async function getTicket(id: string) {
   const res = await fetch(`http://localhost:4000/tickets/${id}`, {
     next: {
-      revalidate: 0,
+      revalidate: 60,
     },
   });
   return res.json();
